@@ -1,32 +1,33 @@
 package com.elmexicano.lsteamer.xlocation;
 
 
-
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.app.ListFragment;
+import android.widget.ArrayAdapter;
 
 /**
- * A simple {@link Fragment} subclass.
- *
+ * ListFragment that will hold the List
  */
-public class LocationListFragment extends Fragment {
+public class LocationListFragment extends ListFragment {
 
 
     public LocationListFragment() {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-        return textView;
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+
+        String[] values = new String[]{"Berlin","Hamburg","Asperg",
+                "Cork","Dublin",
+                "CDMX","Puebla","Guadalajara"
+                };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, values);
+
+        setListAdapter(adapter);
+
     }
 
 }
