@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -15,6 +17,17 @@ import java.util.ArrayList;
  */
 
 public class LocationAdapter extends ArrayAdapter<LocationData> {
+
+    /**
+     * The View Holder will hold the id's
+     */
+    public static class ViewHolder{
+        TextView title;
+        TextView distance;
+        TextView address;
+        ImageView image;
+
+    }
 
     public LocationAdapter(Context context, ArrayList<LocationData> locations){
         super(context, 0, locations);
@@ -25,22 +38,34 @@ public class LocationAdapter extends ArrayAdapter<LocationData> {
         //Gets the data item for this position
         LocationData locations = getItem(position);
 
+        //creating a ViewHolder
+        ViewHolder viewHolder;
+
         //Checking if an existing view is being reused, otherwise inflate a new view from custom row layout
         if(convertView == null){
+
+            viewHolder = new ViewHolder();
+
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_list_row, parent, false);
+
+            //Set the references to the viewHolder
+            viewHolder.title = (TextView) convertView.findViewById(R.id.locationTitle);
+            viewHolder.distance = (TextView) convertView.findViewById(R.id.locationDistance);
+            viewHolder.address = (TextView) convertView.findViewById(R.id.locationAddress);
+            viewHolder.image = (ImageView) convertView.findViewById(R.id.locationIcon);
+
+            //Using this tag to extract the references
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        //Grab references of views so we can populate them with specific note row data
-        TextView locationTitle = (TextView) convertView.findViewById(R.id.locationTitle);
-        TextView locationDistance = (TextView) convertView.findViewById(R.id.locationDistance);
-        TextView locationAddress = (TextView) convertView.findViewById(R.id.locationAddress);
-        ImageView locationIcon = (ImageView) convertView.findViewById(R.id.locationIcon);
 
         //Fills each new referenced view with data associated with the note it's referencing
-        locationTitle.setText(locations.getTitle());
-        locationAddress.setText(locations.getAddress());
-        locationDistance.setText(String.valueOf(locations.getDistace())+"m");
-        locationIcon.setImageResource(locations.getImageIconDEPRECATE());
+        viewHolder.title.setText(locations.getTitle());
+        viewHolder.address.setText(locations.getAddress());
+        viewHolder.distance.setText(String.valueOf(locations.getDistace())+"m");
+        viewHolder.image.setImageResource(locations.getImageIconDEPRECATE());
 
         //returning the view
         return convertView;
