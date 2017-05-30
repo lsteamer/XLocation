@@ -1,6 +1,7 @@
 package com.elmexicano.lsteamer.xlocation;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 
 /**
@@ -18,6 +19,25 @@ public class LocationData {
     private String[] imagesSuffix;
     private int  distace;
     private float latitude, longitude;
+
+
+    public LocationData(String title, String address, int distance){
+        this.locationID="";
+        this.title=title;
+        this.address=address;
+        this.distace=distance;
+        this.latitude=0;
+        this.longitude=0;
+        this.postalCode="";
+        this.category="";
+        this.phoneNumber="";
+        this.formattedPhoneNumber="";
+        this.twitter="";
+        this.instagram="";
+        this.facebook="";
+        this.imageIcon=null;
+        this.imagesSuffix=null;
+    }
 
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
@@ -100,6 +120,11 @@ public class LocationData {
     public String[] getImagesSuffix(){
         return imagesSuffix;
     }
+
+    public int getImageIconDEPRECATE(){
+        return R.drawable.staticicon;
+    }
+
     public Bitmap getImageIcon(){
         return imageIcon;
     }
