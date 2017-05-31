@@ -16,13 +16,11 @@ import java.net.URL;
  * Created by lsteamer on 30/05/2017.
  */
 
-public class DownloadHTML extends AsyncTask<String, Void, String[]> {
+public class DownloadHTML extends AsyncTask<String, Void, String> {
 
-
-    private static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
 
     @Override
-    protected String[] doInBackground(String... strings) {
+    protected String doInBackground(String... strings) {
 
         // Declaring outside the try/catch to close them later
         HttpURLConnection urlCon = null;
@@ -30,103 +28,71 @@ public class DownloadHTML extends AsyncTask<String, Void, String[]> {
 
 
         // Will contain the raw JSON response as a string.
-        String [] weatherJSONStr = new String[2];
-
-        String format = "json";
-        String appid = "e646b9ad2e82a2f2b6afcf8741f70f96";
+        String searchJSONstr;
 
 
         try {
 
-            // Construct the URL for the OpenWeatherMap query
+            // Construct the URL for the Foursquare query
 
-            final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather?";
-            final String LATITUDE_PARAM = "lat";
-            final String LONGITUDE_PARAM = "lon";
-            final String POSTAL_CODE = "q";
-            final String FORMAT_PARAM = "mode";
-            final String UNITS_PARAM = "units";
-            final String DAYS_PARAM = "cnt";
-            final String APPID_PARAM = "APPID";
-            Uri UriU;
-            Uri UriW;
+            final String BASE_URL = "https://api.foursquare.com/v2/venues";
+            final String OAUTH_PARAM = "oauth_token";
+            final String CLIENT_ID_PARAM = "client_id";
+            final String CLIENT_SECRET_PARAM = "client_secret";
+            final String VERSION = "v";
+            final String LATLON_PARAM = "ll";
+
+            Uri UriQ;
 
 
-            if(strings.length==4){
+            if(strings.length==3){
 
-                UriU = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(LATITUDE_PARAM, strings[0])
-                        .appendQueryParameter(LONGITUDE_PARAM, strings[1])
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, strings[2])
-                        .appendQueryParameter(DAYS_PARAM,  strings[3])
-                        .appendQueryParameter(APPID_PARAM, appid)
-                        .build();
-
-                UriW = Uri.parse(WEATHER_BASE_URL).buildUpon()
-                        .appendQueryParameter(LATITUDE_PARAM, strings[0])
-                        .appendQueryParameter(LONGITUDE_PARAM, strings[1])
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, strings[2])
-                        .appendQueryParameter(APPID_PARAM, appid)
+                UriQ = Uri.parse(BASE_URL+"/search").buildUpon()
+                        .appendQueryParameter(LATLON_PARAM, strings[0])
+                        .appendQueryParameter(OAUTH_PARAM, strings[2])
+                        .appendQueryParameter(VERSION, strings[1])
                         .build();
 
             }
             else{
 
-                UriU = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter(POSTAL_CODE, strings[0])
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, strings[1])
-                        .appendQueryParameter(DAYS_PARAM,  strings[2])
-                        .appendQueryParameter(APPID_PARAM, appid)
+                UriQ = Uri.parse(BASE_URL+"/search").buildUpon()
+                        .appendQueryParameter(LATLON_PARAM, strings[0])
+                        .appendQueryParameter(CLIENT_ID_PARAM, strings[2])
+                        .appendQueryParameter(CLIENT_SECRET_PARAM, strings[3])
+                        .appendQueryParameter(VERSION, strings[1])
                         .build();
-
-                UriW = Uri.parse(WEATHER_BASE_URL).buildUpon()
-                        .appendQueryParameter(POSTAL_CODE, strings[0])
-                        .appendQueryParameter(FORMAT_PARAM, format)
-                        .appendQueryParameter(UNITS_PARAM, strings[1])
-                        .appendQueryParameter(APPID_PARAM, appid)
-                        .build();
-
             }
-            URL[] url = new URL[2];
+
             //Read the URL
-            url[0] = new URL(UriW.toString());
-            url[1] = new URL(UriU.toString());
+            URL url = new URL(UriQ.toString());
 
-            for(int i=0; i<2; i++ ) {
-                //Accessing the URL
-                urlCon = (HttpURLConnection) url[i].openConnection();
-                urlCon.setRequestMethod("GET");
-                urlCon.connect();
+            //Accessing the URL
+            urlCon = (HttpURLConnection) url.openConnection();
+            urlCon.setRequestMethod("GET");
+            urlCon.connect();
+            // Read the input stream into a String
+            InputStream inputStream = urlCon.getInputStream();
+            StringBuffer buffer = new StringBuffer();
 
-
-                // Read the input stream into a String
-                InputStream inputStream = urlCon.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-
-                if (inputStream == null) {
-                    // Nothing to do.
-                    weatherJSONStr = null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Adding a newline as buffer for debugging.
-                    buffer.append(line + "\n");
-                }
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-                weatherJSONStr[i] = buffer.toString();
-
+            if (inputStream == null) {
+                // Nothing to do.
+                searchJSONstr = null;
             }
+            reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            return weatherJSONStr;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Adding a newline as buffer for debugging.
+                buffer.append(line + "\n");
+            }
+            if (buffer.length() == 0) {
+                // Stream was empty.  No point in parsing.
+                return null;
+            }
+            searchJSONstr = buffer.toString();
+
+            return searchJSONstr;
 
         } catch (MalformedURLException e) {
             e.printStackTrace();

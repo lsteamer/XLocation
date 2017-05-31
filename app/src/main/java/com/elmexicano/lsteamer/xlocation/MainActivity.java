@@ -3,10 +3,8 @@ package com.elmexicano.lsteamer.xlocation;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.content.Intent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +16,10 @@ import com.foursquare.android.nativeoauth.FoursquareOAuthException;
 import com.foursquare.android.nativeoauth.FoursquareUnsupportedVersionException;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,9 +38,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void onClickNoUser(View view){
-        Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-        finish();
-        startActivity(intent);
+
+        DownloadHTML seachAsyncTask = new DownloadHTML();
+        String nonparsedHTML="";
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+
+        try {
+            nonparsedHTML = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.e("Watwatwat",nonparsedHTML);
     }
 
     protected void onClickUser(View view){
@@ -119,8 +135,21 @@ public class MainActivity extends AppCompatActivity {
 
         if (exception == null) {
             String accessToken = tokenResponse.getAccessToken();
-            // Success.
-            toastMessage(this, "Access token: " + accessToken);
+
+            DownloadHTML seachAsyncTask = new DownloadHTML();
+            String nonparsedHTML = "";
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+
+            try {
+                nonparsedHTML = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
 
         } else {
             if (exception instanceof FoursquareOAuthException) {
