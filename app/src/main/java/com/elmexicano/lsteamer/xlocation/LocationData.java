@@ -14,7 +14,7 @@ public class LocationData {
      */
     private String locationID, title, address, postalCode,
             category, phoneNumber, formattedPhoneNumber,
-            twitter, instagram, facebook;
+            twitter, instagram, facebook, iconPrefix;
     private Bitmap imageIcon;
     private String[] imagesSuffix;
     private int  distace;
@@ -35,6 +35,7 @@ public class LocationData {
         this.twitter="";
         this.instagram="";
         this.facebook="";
+        this.iconPrefix=null;
         this.imageIcon=null;
         this.imagesSuffix=null;
     }
@@ -42,7 +43,7 @@ public class LocationData {
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
                         String category, String phoneNumber, String formattedPhoneNumber, String twitter,
-                        String instagram, String facebook){
+                        String instagram, String facebook, String iconPrefix){
         this.locationID=locationID;
         this.title=title;
         this.address=address;
@@ -56,13 +57,14 @@ public class LocationData {
         this.twitter=twitter;
         this.instagram=instagram;
         this.facebook=facebook;
+        this.iconPrefix=iconPrefix;
         this.imageIcon=null;
         this.imagesSuffix=null;
     }
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
                         String category, String phoneNumber, String formattedPhoneNumber, String twitter,
-                        String instagram, String facebook, Bitmap imageIcon, String[] imagesSuffix){
+                        String instagram, String facebook, String iconPrefix, Bitmap imageIcon, String[] imagesSuffix){
         this.locationID=locationID;
         this.title=title;
         this.address=address;
@@ -76,6 +78,7 @@ public class LocationData {
         this.twitter=twitter;
         this.instagram=instagram;
         this.facebook=facebook;
+        this.iconPrefix=iconPrefix;
         this.imageIcon=imageIcon;
         this.imagesSuffix=imagesSuffix;
 
@@ -116,6 +119,9 @@ public class LocationData {
     }
     public String getFacebook(){
         return facebook;
+    }
+    public String getInstagram(){
+        return instagram;
     }
     public String[] getImagesSuffix(){
         return imagesSuffix;

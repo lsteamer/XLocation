@@ -17,7 +17,12 @@ import com.foursquare.android.nativeoauth.FoursquareUnsupportedVersionException;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 201;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,24 +43,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void onClickNoUser(View view){
 
-        DownloadHTML seachAsyncTask = new DownloadHTML();
-        String nonparsedHTML="";
+    protected void onClickNoUser(View view){
+        //Logging in without an user
+
 
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+        ArrayList<LocationData> locations = new ArrayList<>();
 
+        /**
+         * The Following is if we get the Information in the ArrayList Before jumping to the next Activity
+         */
+
+        /*
+        //Class that downloads the HTML
+        DownloadHTML seachAsyncTask = new DownloadHTML();
         try {
-            nonparsedHTML = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
+            locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        */
 
+        String query = "52.500342,13.425170"+","+dayDateStack.format(cal.getTime())+","+CLIENT_ID,CLIENT_SECRET;
+        Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+        intent.putExtra("query",query);
+        finish();
+        startActivity(intent);
 
-        Log.e("Watwatwat",nonparsedHTML);
     }
 
     protected void onClickUser(View view){
@@ -143,13 +162,12 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
 
             try {
-                nonparsedHTML = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
+                ArrayList<LocationData> locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
 
         } else {
             if (exception instanceof FoursquareOAuthException) {
@@ -165,14 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Exchange a code for an OAuth Token. Note that we do not recommend you
-     * do this in your app, rather do the exchange on your server. Added here
-     * for demo purposes.
-     *
-     * @param code
-     *          The auth code returned from the native auth flow.
-     */
+
     private void performTokenExchange(String code) {
         Intent intent = FoursquareOAuth.getTokenExchangeIntent(this, CLIENT_ID, CLIENT_SECRET, code);
         startActivityForResult(intent, REQUEST_CODE_FSQ_TOKEN_EXCHANGE);

@@ -22,11 +22,12 @@ public class LocationListFragment extends ListFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
+
         super.onActivityCreated(savedInstanceState);
 
 
 
-        locations = new ArrayList<LocationData>();
+        locations = new ArrayList<>();
         locations.add(new LocationData("Santa Maria EastSide", "Berlin",30));
         locations.add(new LocationData("Los Burritos de la esquina", "PHamburg",30));
         locations.add(new LocationData("Ahuevo", "Asperg",30));

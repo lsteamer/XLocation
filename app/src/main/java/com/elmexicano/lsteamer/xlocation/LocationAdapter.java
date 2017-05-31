@@ -1,6 +1,7 @@
 package com.elmexicano.lsteamer.xlocation;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class LocationAdapter extends ArrayAdapter<LocationData> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
+
         //Gets the data item for this position
         LocationData locations = getItem(position);
 
