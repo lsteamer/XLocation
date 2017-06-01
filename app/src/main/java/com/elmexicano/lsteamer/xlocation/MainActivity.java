@@ -21,12 +21,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
 
     //
     private static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
@@ -47,30 +48,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onClickNoUser(View view){
         //Logging in without an user
 
-
+        //Query requires today's date
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+
+        //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
-
-        /**
-         * The Following is if we get the Information in the ArrayList Before jumping to the next Activity
-         */
-
-        /*
         //Class that downloads the HTML
         DownloadHTML seachAsyncTask = new DownloadHTML();
         try {
+            //Location,Today's date, ClientID,ClientSecret
             locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        */
 
-        String query = "52.500342,13.425170"+","+dayDateStack.format(cal.getTime())+","+CLIENT_ID,CLIENT_SECRET;
         Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-        intent.putExtra("query",query);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("list",locations);
+        intent.putExtras(bundle);
         finish();
         startActivity(intent);
 
@@ -156,18 +154,27 @@ public class MainActivity extends AppCompatActivity {
             String accessToken = tokenResponse.getAccessToken();
 
             DownloadHTML seachAsyncTask = new DownloadHTML();
-            String nonparsedHTML = "";
+            ArrayList<LocationData> locations = new ArrayList<>();
 
+            //Query requires today's date
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
 
             try {
-                ArrayList<LocationData> locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
+                //Location,Today's date, token
+                locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+
+            Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("list",locations);
+            intent.putExtras(bundle);
+            finish();
+            startActivity(intent);
 
         } else {
             if (exception instanceof FoursquareOAuthException) {

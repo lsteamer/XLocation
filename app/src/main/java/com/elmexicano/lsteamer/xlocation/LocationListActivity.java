@@ -1,10 +1,15 @@
 package com.elmexicano.lsteamer.xlocation;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 /**
  * Activity that will Hold the list
@@ -15,9 +20,30 @@ public class LocationListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //This gets the ArrayList whit the info Loaded
+        ArrayList<LocationData> locations;
+        Bundle bundle = getIntent().getExtras();
+        locations = (ArrayList<LocationData>) bundle.getSerializable("list");
+
+
+
+        LocationListFragment listFragment = new LocationListFragment();
+        listFragment.setArguments(bundle);
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        transaction.add(R.id.fragmentFrame, listFragment);
+        transaction.commit();
+
+
+
+
         setContentView(R.layout.content_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
     }
 
 

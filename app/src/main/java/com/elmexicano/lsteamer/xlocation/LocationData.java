@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 
+import java.io.Serializable;
+
 /**
  * Created by lsteamer on 30/05/2017.
  */
 
-public class LocationData {
+public class LocationData implements Serializable {
     /**
      * I might not use them all, but I included all I could see myself using
      */

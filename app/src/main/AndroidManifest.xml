@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LocationListActivity"
+            android:name="com.elmexicano.lsteamer.xlocation.LocationListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
