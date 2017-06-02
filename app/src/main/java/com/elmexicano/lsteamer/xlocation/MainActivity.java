@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //
     private static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
     private static String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
+
     //
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 201;
 
-    protected static final String LIST_DATA_ID = "com.elmexicano.lsteamer.xlocation";
 
 
     @Override
@@ -53,13 +53,6 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
         //Class that downloads the HTML
-        /**
-         * REMEMBER
-         * TO
-         * CHANGE
-         * THIS
-         */
-        String[] wat=null;
         DownloadJSON seachAsyncTask = new DownloadJSON();
         try {
             //Location,Today's date, ClientID,ClientSecret

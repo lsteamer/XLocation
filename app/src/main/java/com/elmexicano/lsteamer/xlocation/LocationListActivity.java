@@ -40,6 +40,7 @@ public class LocationListActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.content_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
