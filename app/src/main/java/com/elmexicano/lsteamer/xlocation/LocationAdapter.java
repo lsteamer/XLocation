@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -67,7 +69,10 @@ public class LocationAdapter extends ArrayAdapter<LocationData> {
         viewHolder.title.setText(locations.getTitle());
         viewHolder.address.setText(locations.getAddress());
         viewHolder.distance.setText(String.valueOf(locations.getDistace())+"m");
-        viewHolder.image.setImageResource(locations.getImageIconDEPRECATE());
+        String[] wat = locations.getImageIcon();
+        Glide.with(getContext())
+                .load(locations.getIcon())
+                .into(viewHolder.image);
 
         //returning the view
         return convertView;

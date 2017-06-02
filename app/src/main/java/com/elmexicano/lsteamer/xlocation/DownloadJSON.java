@@ -143,7 +143,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             String locationID, title,address, postalCode, category, phoneNumber, formattedPhoneNumber, twitter, instagram,  facebook, icon;
             int distance;
             float latitude, longitude;
-            String [] suffix = new String[venueJSONArray.length()];
+            String [] suffix = null;
 
             for (int i = 0; i < venueJSONArray.length(); i++) {
                 // Get the JSON object holding the venue
@@ -151,24 +151,19 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
                 locationID = venueJSONObj.getString("id");
 
-                //There must be a light weight solution to do what was intended
-                //Research it time permitting
+                /**
+                 * There must be a light weight solution to do the following
+                 * Research it time permitting
+                 *
+                 */
+                //
                 /*
-
-                DownloadImagesJSON seachAsyncTask = new DownloadImagesJSON();
-                    try {
-                        if(strings.length==3){
-                            suffix = seachAsyncTask.execute(locationID,strings[1],strings[2]).get();
-                        }else {
-                            suffix = seachAsyncTask.execute(locationID,strings[1],strings[2],strings[3]).get();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
+                if(strings.length==3){
+                    suffix = getImageJSON(locationID,strings[1],strings[2]);
+                }else {
+                    suffix = getImageJSON(locationID,strings[1],strings[2],strings[3]);
+                }
                 */
-
 
                 title = venueJSONObj.getString("name");
 
@@ -200,7 +195,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                 category = categoriesJSON.getString("name");
                 JSONObject iconJSON = categoriesJSON.getJSONObject("icon");
                 icon = iconJSON.getString("prefix");
-                icon=icon+"88.png";
+                icon=icon+"bg_88.png";
 
                 //Contact data
                 JSONObject contactJSON = venueJSONObj.getJSONObject("contact");
@@ -242,5 +237,142 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
         return locations;
     }
+
+
+
+
+
+
+    private String[] getImageJSON(String... strings) {
+
+        // Declaring outside the try/catch to close them later
+        HttpURLConnection urlCon = null;
+        BufferedReader reader = null;
+
+        String [] suffix;
+        // Will contain the raw JSON response as a string.
+        String searchJSONstr;
+
+
+        try {
+
+            // Construct the URL for the Foursquare query
+
+            final String BASE_URL = "https://api.foursquare.com/v2/venues/";
+            final String OAUTH_PARAM = "oauth_token";
+            final String CLIENT_ID_PARAM = "client_id";
+            final String CLIENT_SECRET_PARAM = "client_secret";
+            final String VERSION = "v";
+
+            Uri UriQ;
+
+
+            if(strings.length==3){
+
+                UriQ = Uri.parse(BASE_URL+strings[0]+"/photos").buildUpon()
+                        .appendQueryParameter(OAUTH_PARAM, strings[2])
+                        .appendQueryParameter(VERSION, strings[1])
+                        .build();
+
+            }
+            else{
+
+                UriQ = Uri.parse(BASE_URL+strings[0]+"/photos").buildUpon()
+                        .appendQueryParameter(CLIENT_ID_PARAM, strings[2])
+                        .appendQueryParameter(CLIENT_SECRET_PARAM, strings[3])
+                        .appendQueryParameter(VERSION, strings[1])
+                        .build();
+            }
+
+            //Read the URL
+            URL url = new URL(UriQ.toString());
+
+            //Accessing the URL
+            urlCon = (HttpURLConnection) url.openConnection();
+            urlCon.setRequestMethod("GET");
+            urlCon.connect();
+            // Read the input stream into a String
+            InputStream inputStream = urlCon.getInputStream();
+            StringBuffer buffer = new StringBuffer();
+
+
+            if (inputStream == null) {
+                // Nothing to do.
+                return null;
+            }
+            else{
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Adding a newline as buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                searchJSONstr = buffer.toString();
+
+
+                suffix = cleanImageJSON(searchJSONstr);
+                return suffix;
+
+            }
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (urlCon != null) {
+                urlCon.disconnect();
+            }
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (final IOException e) {
+                    Log.e("ForecastFragment", "Error closing stream", e);
+                }
+            }
+        }
+
+    }
+
+
+    private String[] cleanImageJSON(String htmlJSONstr){
+        String[] suffix=null;
+        try{
+
+
+
+            JSONObject searchJSONObj = new JSONObject(htmlJSONstr);
+
+            //And the following process will get the info for all of the Following days.
+            JSONObject responseJSONArray = searchJSONObj.getJSONObject("response");
+            JSONObject photosJSONArray = responseJSONArray.getJSONObject("photos");
+            JSONArray itemsJSONArray = photosJSONArray.getJSONArray("items");
+
+
+            suffix = new String[itemsJSONArray.length()];
+            for (int i = 0; i < itemsJSONArray.length(); i++) {
+                // Get the JSON object holding the venue
+                JSONObject pictureJSONObj = itemsJSONArray.getJSONObject(i);
+                suffix[i] = pictureJSONObj.getString("suffix");
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return suffix;
+    }
+
+
+
+
+
 
 }

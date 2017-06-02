@@ -1,9 +1,5 @@
 package com.elmexicano.lsteamer.xlocation;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.Location;
-
 import java.io.Serializable;
 
 /**
@@ -16,8 +12,7 @@ public class LocationData implements Serializable {
      */
     private String locationID, title, address, postalCode,
             category, phoneNumber, formattedPhoneNumber,
-            twitter, instagram, facebook, iconPrefix;
-    private Bitmap imageIcon;
+            twitter, instagram, facebook, icon;
     private String[] imagesSuffix;
     private int  distace;
     private float latitude, longitude;
@@ -37,15 +32,14 @@ public class LocationData implements Serializable {
         this.twitter="";
         this.instagram="";
         this.facebook="";
-        this.iconPrefix=null;
-        this.imageIcon=null;
+        this.icon =null;
         this.imagesSuffix=null;
     }
 
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
                         String category, String phoneNumber, String formattedPhoneNumber, String twitter,
-                        String instagram, String facebook, String iconPrefix, String[] imagesSuffix){
+                        String instagram, String facebook, String icon, String[] imagesSuffix){
         this.locationID=locationID;
         this.title=title;
         this.address=address;
@@ -59,32 +53,10 @@ public class LocationData implements Serializable {
         this.twitter=twitter;
         this.instagram=instagram;
         this.facebook=facebook;
-        this.iconPrefix=iconPrefix;
-        this.imageIcon=null;
+        this.icon =icon;
         this.imagesSuffix=imagesSuffix;
     }
 
-    public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
-                        String category, String phoneNumber, String formattedPhoneNumber, String twitter,
-                        String instagram, String facebook, String iconPrefix, Bitmap imageIcon, String[] imagesSuffix){
-        this.locationID=locationID;
-        this.title=title;
-        this.address=address;
-        this.distace=distance;
-        this.latitude=latitude;
-        this.longitude=longitude;
-        this.postalCode=postalCode;
-        this.category=category;
-        this.phoneNumber=phoneNumber;
-        this.formattedPhoneNumber=formattedPhoneNumber;
-        this.twitter=twitter;
-        this.instagram=instagram;
-        this.facebook=facebook;
-        this.iconPrefix=iconPrefix;
-        this.imageIcon=imageIcon;
-        this.imagesSuffix=imagesSuffix;
-
-    }
 
     public String getLocationID(){
         return locationID;
@@ -129,12 +101,12 @@ public class LocationData implements Serializable {
         return imagesSuffix;
     }
 
-    public int getImageIconDEPRECATE(){
-        return R.drawable.staticicon;
+    public String getIcon(){
+        return icon;
     }
 
-    public Bitmap getImageIcon(){
-        return imageIcon;
+    public String[] getImageIcon(){
+        return imagesSuffix;
     }
 
 }

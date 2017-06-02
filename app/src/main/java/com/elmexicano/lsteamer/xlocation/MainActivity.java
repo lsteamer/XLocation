@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements Serializable {
          * CHANGE
          * THIS
          */
+        String[] wat=null;
         DownloadJSON seachAsyncTask = new DownloadJSON();
         try {
-
             //Location,Today's date, ClientID,ClientSecret
             locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+
 
         Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
         Bundle bundle = new Bundle();
