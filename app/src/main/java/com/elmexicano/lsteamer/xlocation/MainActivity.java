@@ -17,10 +17,6 @@ import com.foursquare.android.nativeoauth.FoursquareUnsupportedVersionException;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 201;
+
+    protected static final String LIST_DATA_ID = "com.elmexicano.lsteamer.xlocation";
 
 
     @Override
@@ -55,8 +53,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
         //Class that downloads the HTML
-        DownloadHTML seachAsyncTask = new DownloadHTML();
+        /**
+         * REMEMBER
+         * TO
+         * CHANGE
+         * THIS
+         */
+        DownloadJSON seachAsyncTask = new DownloadJSON();
         try {
+
             //Location,Today's date, ClientID,ClientSecret
             locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         intent.putExtras(bundle);
         finish();
         startActivity(intent);
+
 
     }
 
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         if (exception == null) {
             String accessToken = tokenResponse.getAccessToken();
 
-            DownloadHTML seachAsyncTask = new DownloadHTML();
+            DownloadJSON seachAsyncTask = new DownloadJSON();
             ArrayList<LocationData> locations = new ArrayList<>();
 
             //Query requires today's date

@@ -33,7 +33,7 @@ public class LocationListActivity extends AppCompatActivity {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
-        transaction.add(R.id.fragmentFrame, listFragment);
+        transaction.replace(R.id.fragmentFrame, listFragment);
         transaction.commit();
 
 

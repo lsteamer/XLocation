@@ -45,7 +45,7 @@ public class LocationData implements Serializable {
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,
                         String category, String phoneNumber, String formattedPhoneNumber, String twitter,
-                        String instagram, String facebook, String iconPrefix){
+                        String instagram, String facebook, String iconPrefix, String[] imagesSuffix){
         this.locationID=locationID;
         this.title=title;
         this.address=address;
@@ -61,7 +61,7 @@ public class LocationData implements Serializable {
         this.facebook=facebook;
         this.iconPrefix=iconPrefix;
         this.imageIcon=null;
-        this.imagesSuffix=null;
+        this.imagesSuffix=imagesSuffix;
     }
 
     public LocationData(String locationID, String title, String address, int distance, float latitude, float longitude, String postalCode,

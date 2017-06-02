@@ -16,12 +16,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by lsteamer on 30/05/2017.
  */
 
-public class DownloadHTML extends AsyncTask<String, Void, ArrayList<LocationData>> {
+public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData>> {
 
 
     @Override
@@ -83,24 +84,27 @@ public class DownloadHTML extends AsyncTask<String, Void, ArrayList<LocationData
 
             if (inputStream == null) {
                 // Nothing to do.
-                searchJSONstr = null;
-            }
-            reader = new BufferedReader(new InputStreamReader(inputStream));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Adding a newline as buffer for debugging.
-                buffer.append(line + "\n");
-            }
-            if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
                 return null;
             }
-            searchJSONstr = buffer.toString();
+            else{
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Adding a newline as buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                searchJSONstr = buffer.toString();
 
 
-            locations = cleanJSONHTML(searchJSONstr);
-            return locations;
+                locations = cleanJSONHTML(searchJSONstr, strings);
+                return locations;
+
+            }
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -125,27 +129,47 @@ public class DownloadHTML extends AsyncTask<String, Void, ArrayList<LocationData
     }
 
 
-    private ArrayList<LocationData> cleanJSONHTML (String htmlJSONstr){
+    private ArrayList<LocationData> cleanJSONHTML (String strJSON, String... strings){
         ArrayList<LocationData> locations = new ArrayList<>();
         try{
             //
-            JSONObject searchJSONObj = new JSONObject(htmlJSONstr);
+            JSONObject searchJSONObj = new JSONObject(strJSON);
 
-            //And the following process will get the info for all of the Following days.
+            //And the following process will get the info for all of the Venues.
             JSONObject responseJSONArray = searchJSONObj.getJSONObject("response");
-
             JSONArray venueJSONArray = responseJSONArray.getJSONArray("venues");
 
             //Declaring the variables
             String locationID, title,address, postalCode, category, phoneNumber, formattedPhoneNumber, twitter, instagram,  facebook, icon;
             int distance;
             float latitude, longitude;
+            String [] suffix = new String[venueJSONArray.length()];
 
             for (int i = 0; i < venueJSONArray.length(); i++) {
                 // Get the JSON object holding the venue
                 JSONObject venueJSONObj = venueJSONArray.getJSONObject(i);
 
                 locationID = venueJSONObj.getString("id");
+
+                //There must be a light weight solution to do what was intended
+                //Research it time permitting
+                /*
+
+                DownloadImagesJSON seachAsyncTask = new DownloadImagesJSON();
+                    try {
+                        if(strings.length==3){
+                            suffix = seachAsyncTask.execute(locationID,strings[1],strings[2]).get();
+                        }else {
+                            suffix = seachAsyncTask.execute(locationID,strings[1],strings[2],strings[3]).get();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                */
+
+
                 title = venueJSONObj.getString("name");
 
 
@@ -207,7 +231,7 @@ public class DownloadHTML extends AsyncTask<String, Void, ArrayList<LocationData
                 }
                 locations.add(new LocationData(locationID, title, address, distance, latitude, longitude, postalCode,
                         category, phoneNumber, formattedPhoneNumber, twitter,
-                        instagram, facebook, icon));
+                        instagram, facebook, icon, suffix));
 
 
             }
