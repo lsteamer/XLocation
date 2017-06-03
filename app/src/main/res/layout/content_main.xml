@@ -28,14 +28,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/appBarLayout"
         android:layout_alignParentStart="true"></FrameLayout>
-<!--
-    <fragment
-        android:id="@+id/mainActivityFrag"
-        android:name="com.elmexicano.lsteamer.xlocation.LocationListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appBarLayout"
-        android:layout_alignParentStart="true" />
--->
 
 </RelativeLayout>

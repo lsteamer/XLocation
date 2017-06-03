@@ -37,11 +37,8 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
         // Will contain the raw JSON response as a string.
         String searchJSONstr;
 
-
         try {
-
             // Construct the URL for the Foursquare query
-
             final String BASE_URL = "https://api.foursquare.com/v2/venues";
             final String OAUTH_PARAM = "oauth_token";
             final String CLIENT_ID_PARAM = "client_id";
@@ -50,8 +47,6 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             final String LATLON_PARAM = "ll";
 
             Uri UriQ;
-
-
             if(strings.length==3){
 
                 UriQ = Uri.parse(BASE_URL+"/search").buildUpon()
@@ -59,7 +54,6 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                         .appendQueryParameter(OAUTH_PARAM, strings[2])
                         .appendQueryParameter(VERSION, strings[1])
                         .build();
-
             }
             else{
 
@@ -88,7 +82,6 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             }
             else{
                 reader = new BufferedReader(new InputStreamReader(inputStream));
-
                 String line;
                 while ((line = reader.readLine()) != null) {
                     // Adding a newline as buffer for debugging.
@@ -99,11 +92,9 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                     return null;
                 }
                 searchJSONstr = buffer.toString();
-
-
-                locations = cleanJSONHTML(searchJSONstr, strings);
+                //Send the JSON file to get the data
+                locations = cleanJSONHTML(searchJSONstr);
                 return locations;
-
             }
 
         } catch (MalformedURLException e) {
@@ -129,10 +120,11 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
     }
 
 
-    private ArrayList<LocationData> cleanJSONHTML (String strJSON, String... strings){
-        ArrayList<LocationData> locations = new ArrayList<>();
+    private ArrayList<LocationData> cleanJSONHTML (String strJSON){
         try{
-            //
+
+            ArrayList<LocationData> locations = new ArrayList<>();
+
             JSONObject searchJSONObj = new JSONObject(strJSON);
 
             //And the following process will get the info for all of the Venues.
@@ -149,8 +141,6 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                 JSONObject venueJSONObj = venueJSONArray.getJSONObject(i);
 
                 locationID = venueJSONObj.getString("id");
-
-
                 title = venueJSONObj.getString("name");
 
 
@@ -216,15 +206,12 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
 
             }
+            return locations;
 
         } catch (JSONException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return locations;
     }
-
-
-
 
 }

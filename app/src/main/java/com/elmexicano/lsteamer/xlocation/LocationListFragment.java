@@ -51,7 +51,8 @@ public class LocationListFragment extends ListFragment {
         LocationData locationData = (LocationData) getListAdapter().getItem(position);
         Intent intent = new Intent(getActivity(), LocationDetailActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("list",locations);
+
+        bundle.putSerializable("location data",locationData);
         intent.putExtras(bundle);
         startActivity(intent);
 

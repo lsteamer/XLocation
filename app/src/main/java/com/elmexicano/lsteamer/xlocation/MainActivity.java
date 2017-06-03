@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -63,11 +62,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             e.printStackTrace();
         }
 
-
+        //Calling the List
         Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("list",locations);
         intent.putExtras(bundle);
+        //Deleting this one
         finish();
         startActivity(intent);
 

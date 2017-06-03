@@ -11,7 +11,6 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:id="@+id/locationIcon"
-        android:src="@drawable/staticicon"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginStart="12dp"

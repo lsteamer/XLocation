@@ -54,7 +54,7 @@ public class LocationData implements Serializable {
         this.instagram=instagram;
         this.facebook=facebook;
         this.icon =icon;
-        this.imagesSuffix=imagesSuffix;
+        this.imagesSuffix=null;
     }
 
     protected void setImagesSuffix(String[] imagesSuffix){
