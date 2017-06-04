@@ -4,7 +4,13 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 public class LocationDetailActivity extends AppCompatActivity {
 
@@ -41,7 +47,31 @@ public class LocationDetailActivity extends AppCompatActivity {
             transaction.commit();
         }
 
+        String[] locationImagesSuffix = locationData.getImagesSuffix();
 
+        /**
+         * Below is the image code
+         */
+        if(locationImagesSuffix.length>0){
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.imageLinear);
+            for(int i = 0; i<locationImagesSuffix.length; i++){
+                ImageView imageView = new ImageView(this);
+                imageView.setId(i);
+                imageView.setPadding(2,2,2,2);
+                Glide.with(this)
+                        .load("https://igx.4sqi.net/img/general/300x300"+locationImagesSuffix[i])
+                        .into(imageView);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                linearLayout.addView(imageView);
+            }
+
+        }
+
+
+
+
+
+        //Setting the Values
         tvTitle = (TextView) findViewById(R.id.titleTextView);
         tvCategory = (TextView) findViewById(R.id.categoryTextView);
         tvAddress = (TextView) findViewById(R.id.addressTextView);

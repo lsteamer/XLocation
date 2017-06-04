@@ -25,19 +25,24 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity implements Serializable {
 
     //
-    private static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
-    private static String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
+    protected static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
+    protected static String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
 
     //
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 201;
 
+    protected static String DATE;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Query requires today's date
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+        DATE = dayDateStack.format(cal.getTime());
 
     }
 
@@ -45,9 +50,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected void onClickNoUser(View view){
         //Logging in without an user
 
-        //Query requires today's date
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
+
 
         //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
@@ -55,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         DownloadJSON seachAsyncTask = new DownloadJSON();
         try {
             //Location,Today's date, ClientID,ClientSecret
-            locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),CLIENT_ID,CLIENT_SECRET).get();
+            locations = seachAsyncTask.execute("52.500342,13.425170",DATE,CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             try {
                 //Location,Today's date, token
-                locations = seachAsyncTask.execute("52.500342,13.425170",dayDateStack.format(cal.getTime()),accessToken).get();
+                locations = seachAsyncTask.execute("52.500342,13.425170",DATE,accessToken).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

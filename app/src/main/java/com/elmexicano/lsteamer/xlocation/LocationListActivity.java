@@ -4,11 +4,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import java.util.ArrayList;
 
 /**
  * Activity that will Hold the list
@@ -49,6 +44,7 @@ public class LocationListActivity extends AppCompatActivity {
 
     /**
      * The Following are the Toolbar Menu methods
+     * Decided not to use the toolbar
      * */
     /*
     @Override

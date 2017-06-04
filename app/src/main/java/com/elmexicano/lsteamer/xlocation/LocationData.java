@@ -108,8 +108,4 @@ public class LocationData implements Serializable {
         return icon;
     }
 
-    public String[] getImageIcon(){
-        return imagesSuffix;
-    }
-
 }

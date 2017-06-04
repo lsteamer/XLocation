@@ -46,24 +46,11 @@ public class DownloadImagesJSON extends AsyncTask<String, Void, String[]> {
             final String VERSION = "v";
 
             Uri UriQ;
-
-
-            if(strings.length==3){
-
-                UriQ = Uri.parse(BASE_URL+strings[0]+"/photos").buildUpon()
-                        .appendQueryParameter(OAUTH_PARAM, strings[2])
-                        .appendQueryParameter(VERSION, strings[1])
-                        .build();
-
-            }
-            else{
-
-                UriQ = Uri.parse(BASE_URL+strings[0]+"/photos").buildUpon()
-                        .appendQueryParameter(CLIENT_ID_PARAM, strings[2])
-                        .appendQueryParameter(CLIENT_SECRET_PARAM, strings[3])
-                        .appendQueryParameter(VERSION, strings[1])
-                        .build();
-            }
+            UriQ = Uri.parse(BASE_URL+strings[0]+"/photos").buildUpon()
+                    .appendQueryParameter(CLIENT_ID_PARAM, strings[2])
+                    .appendQueryParameter(CLIENT_SECRET_PARAM, strings[3])
+                    .appendQueryParameter(VERSION, strings[1])
+                    .build();
 
             //Read the URL
             URL url = new URL(UriQ.toString());
@@ -145,11 +132,12 @@ public class DownloadImagesJSON extends AsyncTask<String, Void, String[]> {
                 suffix[i] = pictureJSONObj.getString("suffix");
 
             }
+            return suffix;
         } catch (JSONException e) {
             e.printStackTrace();
+            return new String[0];
         }
 
-        return suffix;
     }
 
 }
