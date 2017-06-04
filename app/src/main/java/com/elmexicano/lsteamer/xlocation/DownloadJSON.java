@@ -121,9 +121,10 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
 
     private ArrayList<LocationData> cleanJSONHTML (String strJSON){
+
+        ArrayList<LocationData> locations = new ArrayList<>();
         try{
 
-            ArrayList<LocationData> locations = new ArrayList<>();
 
             JSONObject searchJSONObj = new JSONObject(strJSON);
 
@@ -206,12 +207,13 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
 
             }
-            return locations;
 
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }
+        return locations;
+
     }
 
 }

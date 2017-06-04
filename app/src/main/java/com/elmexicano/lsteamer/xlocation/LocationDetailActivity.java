@@ -1,5 +1,7 @@
 package com.elmexicano.lsteamer.xlocation;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -15,7 +17,14 @@ public class LocationDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         LocationData locationData = (LocationData) extras.getSerializable("location data");
 
+        //Creating the Fragment and passing the bundle
+        MapFragment listFragment = new MapFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
 
+
+        transaction.replace(R.id.mapLayoutFragment, listFragment);
+        transaction.commit();
 
         TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText(locationData.getTitle());

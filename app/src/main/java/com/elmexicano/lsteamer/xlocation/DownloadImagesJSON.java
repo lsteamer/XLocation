@@ -125,7 +125,7 @@ public class DownloadImagesJSON extends AsyncTask<String, Void, String[]> {
 
 
     private String[] cleanImageJSON(String htmlJSONstr){
-        String[] suffix;
+        String[] suffix=null;
         try{
 
 
@@ -145,11 +145,11 @@ public class DownloadImagesJSON extends AsyncTask<String, Void, String[]> {
                 suffix[i] = pictureJSONObj.getString("suffix");
 
             }
-            return suffix;
         } catch (JSONException e) {
             e.printStackTrace();
-            return new String [0];
         }
+
+        return suffix;
     }
 
 }
