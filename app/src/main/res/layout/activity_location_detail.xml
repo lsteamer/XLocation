@@ -1,27 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/locationDetailContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.elmexicano.lsteamer.xlocation.LocationDetailActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Yo'"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
-
-    <FrameLayout
-        android:id="@+id/mapLayoutFragment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentStart="true"></FrameLayout>
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/titleTextView"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:textSize="20sp" />
+
+        <FrameLayout
+            android:id="@+id/mapLayoutFragment"
+            android:layout_width="match_parent"
+            android:layout_marginTop="150dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"></FrameLayout>
+
+        <TextView
+            android:id="@+id/addressTextView"
+            android:layout_below="@+id/mapLayoutFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addressTextView"
+            android:orientation="horizontal"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/linearLayout">
+            <TextView
+                android:id="@+id/postalTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@+id/postalTextView"
+                android:text=" Berlin"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

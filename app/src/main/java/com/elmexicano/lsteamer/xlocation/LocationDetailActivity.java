@@ -4,10 +4,15 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 public class LocationDetailActivity extends AppCompatActivity {
+
+    private  LocationData locationData;
+    private TextView tvTitle;
+    private TextView tvCategory;
+    private TextView tvAddress;
+    private TextView tvPostalCode;
 
 
     @Override
@@ -16,7 +21,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_location_detail);
 
         Bundle extras = getIntent().getExtras();
-        LocationData locationData = (LocationData) extras.getSerializable("location data");
+        locationData = (LocationData) extras.getSerializable("location data");
 
         //Running for the first time
         if(savedInstanceState==null){
@@ -30,17 +35,22 @@ public class LocationDetailActivity extends AppCompatActivity {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
 
-            
+
             transaction.replace(R.id.mapLayoutFragment, mapFragment);
+
             transaction.commit();
         }
 
-        /*
-        //Creating the Fragment and passing the bundle
 
-        */
-        TextView textView = (TextView) findViewById(R.id.textView);
-        textView.setText(locationData.getTitle());
+        tvTitle = (TextView) findViewById(R.id.titleTextView);
+        tvCategory = (TextView) findViewById(R.id.categoryTextView);
+        tvAddress = (TextView) findViewById(R.id.addressTextView);
+        tvPostalCode = (TextView) findViewById(R.id.postalTextView);
+
+        tvTitle.setText(locationData.getTitle());
+        tvCategory.setText(locationData.getCategory());
+        tvAddress.setText(locationData.getAddress());
+        tvPostalCode.setText(locationData.getPostalCode());
 
 
     }
