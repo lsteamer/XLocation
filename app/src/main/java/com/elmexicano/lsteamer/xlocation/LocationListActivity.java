@@ -21,9 +21,11 @@ public class LocationListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
 
+
+
         //Toolbar. Unsure if keeping it.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
 
         //We get the Bundle to pass it to the Fragment
@@ -48,6 +50,7 @@ public class LocationListActivity extends AppCompatActivity {
     /**
      * The Following are the Toolbar Menu methods
      * */
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
