@@ -18,12 +18,17 @@ public class LocationDetailActivity extends AppCompatActivity {
         LocationData locationData = (LocationData) extras.getSerializable("location data");
 
         //Creating the Fragment and passing the bundle
-        MapFragment listFragment = new MapFragment();
+        MapFragment mapFragment = new MapFragment();
+        Bundle bundle = new Bundle();
+        bundle.putFloat("Lat",locationData.getLatitude());
+        bundle.putFloat("Lng",locationData.getLongitude());
+        bundle.putString("Title",locationData.getTitle());
+        mapFragment.setArguments(bundle);
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
 
 
-        transaction.replace(R.id.mapLayoutFragment, listFragment);
+        transaction.replace(R.id.mapLayoutFragment, mapFragment);
         transaction.commit();
 
         TextView textView = (TextView) findViewById(R.id.textView);

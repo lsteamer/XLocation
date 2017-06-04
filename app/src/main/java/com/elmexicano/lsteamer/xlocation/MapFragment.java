@@ -20,10 +20,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapFragment extends Fragment implements OnMapReadyCallback{
 
 
-    GoogleMap mGoogleMap;
-    MapView mapView;
-    View mView;
-
+    private GoogleMap mGoogleMap;
+    private MapView mapView;
+    private View mView;
+    private LatLng latLng;
+    private String title;
+    //
+    private static final LatLng EVENLY_LAT_LNG = new LatLng(52.500342,13.425170);
 
 
     public MapFragment() {
@@ -34,6 +37,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = getArguments();
+        latLng = new LatLng(extras.getFloat("Lat"),extras.getFloat("Lng"));
+        title = extras.getString("title");
     }
 
     @Override
@@ -62,12 +68,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         MapsInitializer.initialize(getContext());
 
         mGoogleMap = googleMap;
-        LatLng somesome = new LatLng(52.500342,13.425170);
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mGoogleMap.addMarker(new MarkerOptions().position(somesome).title("Something").snippet("woah"));
-        CameraPosition Some = CameraPosition.builder().target(somesome).zoom(16).bearing(0).tilt(45).build();
+        mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(title));
+        CameraPosition locationPosition = CameraPosition.builder().target(latLng).zoom(16).bearing(0).build();
 
-        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Some));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(locationPosition));
 
     }
 }
