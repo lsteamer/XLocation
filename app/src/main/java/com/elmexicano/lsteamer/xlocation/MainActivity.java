@@ -1,10 +1,14 @@
 package com.elmexicano.lsteamer.xlocation;
 
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.foursquare.android.nativeoauth.FoursquareCancelException;
@@ -38,11 +42,35 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //Today's date for Foursquare query
     protected static String DATE;
 
+    protected static Button USER, NO_USER;
+    protected ImageButton background;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        USER = (Button) findViewById(R.id.button_user_login);
+        NO_USER = (Button) findViewById(R.id.button_no_user_login);
+        background = (ImageButton) findViewById(R.id.imageBackground);
+        background.setImageResource(R.drawable.xberg);
+
+        USER.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onClickUser(v);
+            }
+        });
+
+        NO_USER.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                onClickNoUser(v);
+            }
+        });
+
+
+
 
         //Query requires today's date
         Calendar cal = Calendar.getInstance();
@@ -53,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
 
     //Logging in without logging in
-    protected void onClickNoUser(View view){
+    public void onClickNoUser(View view){
 
         //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
@@ -92,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
     }
 
-    protected void onClickUser(View view){
+    public void onClickUser(View view){
         // Start the native auth flow.
         Intent intent = FoursquareOAuth.getConnectIntent(MainActivity.this, CLIENT_ID);
 
@@ -187,12 +215,21 @@ public class MainActivity extends AppCompatActivity implements Serializable {
                 e.printStackTrace();
             }
 
-            Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("list",locations);
-            intent.putExtras(bundle);
-            finish();
-            startActivity(intent);
+            //If there's an issue Toast error message
+            if(locations==null){
+                toastMessage(this,NOT_ONLINE);
+
+            }
+            else{
+
+                Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("list",locations);
+                intent.putExtras(bundle);
+                finish();
+                startActivity(intent);
+
+            }
 
         } else {
             if (exception instanceof FoursquareOAuthException) {
