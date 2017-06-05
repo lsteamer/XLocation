@@ -72,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imageScroll"
+            android:layout_marginTop="80dp"
             android:layout_below="@+id/linearLayout">
             <LinearLayout
                 android:id="@+id/imageLinear"

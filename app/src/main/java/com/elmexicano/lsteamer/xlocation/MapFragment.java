@@ -40,7 +40,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         Bundle extras = getArguments();
         //Get the Location name and details
         latLng = new LatLng(extras.getFloat("Lat"),extras.getFloat("Lng"));
-        title = extras.getString("title");
+        title = extras.getString("Title");
     }
 
     @Override

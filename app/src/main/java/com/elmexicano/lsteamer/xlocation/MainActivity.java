@@ -1,14 +1,11 @@
 package com.elmexicano.lsteamer.xlocation;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.foursquare.android.nativeoauth.FoursquareCancelException;
@@ -29,8 +26,8 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity implements Serializable {
 
     //Client ID & Client Secret
-    protected static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
-    protected static String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
+    protected static final String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
+    protected static final String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
 
     //Error Message
     protected static String NOT_ONLINE = "No connection detected.";
@@ -42,27 +39,26 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //Today's date for Foursquare query
     protected static String DATE;
 
-    protected static Button USER, NO_USER;
-    protected ImageButton background;
+    protected static Button user, no_user;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        USER = (Button) findViewById(R.id.button_user_login);
-        NO_USER = (Button) findViewById(R.id.button_no_user_login);
-        background = (ImageButton) findViewById(R.id.imageBackground);
-        background.setImageResource(R.drawable.xberg);
 
-        USER.setOnClickListener(new View.OnClickListener(){
+
+        user = (Button) findViewById(R.id.button_user_login);
+        no_user = (Button) findViewById(R.id.button_no_user_login);
+
+        user.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 onClickUser(v);
             }
         });
 
-        NO_USER.setOnClickListener(new View.OnClickListener(){
+        no_user.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 onClickNoUser(v);

@@ -4,8 +4,6 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +12,7 @@ import com.bumptech.glide.Glide;
 
 public class LocationDetailActivity extends AppCompatActivity {
 
-    private  LocationData locationData;
+    private LocationData locationData;
     private TextView tvTitle;
     private TextView tvCategory;
     private TextView tvAddress;
@@ -26,6 +24,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_detail);
 
+        //Obtaining the data
         Bundle extras = getIntent().getExtras();
         locationData = (LocationData) extras.getSerializable("location data");
 
@@ -34,16 +33,16 @@ public class LocationDetailActivity extends AppCompatActivity {
             //Fragment showing the map
             MapFragment mapFragment = new MapFragment();
             Bundle bundle = new Bundle();
+
             bundle.putFloat("Lat",locationData.getLatitude());
             bundle.putFloat("Lng",locationData.getLongitude());
             bundle.putString("Title",locationData.getTitle());
             mapFragment.setArguments(bundle);
+
             FragmentManager fm = getFragmentManager();
             FragmentTransaction transaction = fm.beginTransaction();
 
-
             transaction.replace(R.id.mapLayoutFragment, mapFragment);
-
             transaction.commit();
         }
 
@@ -52,8 +51,7 @@ public class LocationDetailActivity extends AppCompatActivity {
         /**
          * Below is the image code
          */
-        if(locationImagesSuffix!=null)
-            if(locationImagesSuffix.length>0){
+        if(locationImagesSuffix!=null&&locationImagesSuffix.length>0){
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.imageLinear);
                 for(int i = 0; i<locationImagesSuffix.length; i++){
                     ImageView imageView = new ImageView(this);
@@ -66,7 +64,7 @@ public class LocationDetailActivity extends AppCompatActivity {
                     linearLayout.addView(imageView);
                 }
 
-            }
+        }
 
 
 

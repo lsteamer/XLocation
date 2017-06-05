@@ -47,7 +47,6 @@ public class LocationAdapter extends ArrayAdapter<LocationData> {
         if(convertView == null){
 
             viewHolder = new ViewHolder();
-
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.location_list_row, parent, false);
 
             //Set the references to the viewHolder
@@ -66,7 +65,7 @@ public class LocationAdapter extends ArrayAdapter<LocationData> {
         //Fills each new referenced view with data associated with the note it's referencing
         viewHolder.title.setText(locations.getTitle());
         viewHolder.address.setText(locations.getAddress());
-        viewHolder.distance.setText(String.valueOf(locations.getDistace())+"m");
+        viewHolder.distance.setText(String.valueOf(locations.getDistance())+"m");
         Glide.with(getContext())
                 .load(locations.getIcon())
                 .into(viewHolder.image);

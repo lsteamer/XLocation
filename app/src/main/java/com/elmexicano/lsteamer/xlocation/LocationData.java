@@ -14,7 +14,7 @@ public class LocationData implements Serializable {
             category, phoneNumber, formattedPhoneNumber,
             twitter, instagram, facebook, icon;
     private String[] imagesSuffix;
-    private int  distace;
+    private int distance;
     private float latitude, longitude;
 
 
@@ -22,7 +22,7 @@ public class LocationData implements Serializable {
         this.locationID="";
         this.title=title;
         this.address=address;
-        this.distace=distance;
+        this.distance =distance;
         this.latitude=0;
         this.longitude=0;
         this.postalCode="";
@@ -43,7 +43,7 @@ public class LocationData implements Serializable {
         this.locationID=locationID;
         this.title=title;
         this.address=address;
-        this.distace=distance;
+        this.distance =distance;
         this.latitude=latitude;
         this.longitude=longitude;
         this.postalCode=postalCode;
@@ -70,8 +70,8 @@ public class LocationData implements Serializable {
     public String getAddress(){
         return address;
     }
-    public int getDistace(){
-        return distace;
+    public int getDistance(){
+        return distance;
     }
     public float getLatitude(){
         return latitude;

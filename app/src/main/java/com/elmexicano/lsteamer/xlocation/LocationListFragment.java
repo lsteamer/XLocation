@@ -29,8 +29,8 @@ public class LocationListFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         Bundle extras = getActivity().getIntent().getExtras();
 
+        //Getting the data
         locations = (ArrayList<LocationData>) extras.getSerializable("list");
-
         locationAdapter = new LocationAdapter(getActivity(),locations);
 
         setListAdapter(locationAdapter);
@@ -40,7 +40,7 @@ public class LocationListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         super.onListItemClick(l, v, position, id);
-
+        //a Method to send the intent
         launchLocationDetailActivity(position);
     }
 
@@ -60,12 +60,9 @@ public class LocationListFragment extends ListFragment {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-
             if(images!=null){
                 locationData.setImagesSuffix(images);
             }
-
-
         }
 
 
