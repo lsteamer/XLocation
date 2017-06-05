@@ -25,7 +25,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private View mView;
     private LatLng latLng;
     private String title;
-    //
+    //Evenly Location
     private static final LatLng EVENLY_LAT_LNG = new LatLng(52.500342,13.425170);
 
 
@@ -38,6 +38,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
+        //Get the Location name and details
         latLng = new LatLng(extras.getFloat("Lat"),extras.getFloat("Lng"));
         title = extras.getString("title");
     }
@@ -71,7 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mGoogleMap.addMarker(new MarkerOptions().position(latLng).title(title));
         CameraPosition locationPosition = CameraPosition.builder().target(latLng).zoom(16).bearing(0).build();
-
         mGoogleMap.moveCamera(CameraUpdateFactory.newCameraPosition(locationPosition));
 
     }

@@ -52,20 +52,21 @@ public class LocationDetailActivity extends AppCompatActivity {
         /**
          * Below is the image code
          */
-        if(locationImagesSuffix.length>0){
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.imageLinear);
-            for(int i = 0; i<locationImagesSuffix.length; i++){
-                ImageView imageView = new ImageView(this);
-                imageView.setId(i);
-                imageView.setPadding(2,2,2,2);
-                Glide.with(this)
-                        .load("https://igx.4sqi.net/img/general/300x300"+locationImagesSuffix[i])
-                        .into(imageView);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                linearLayout.addView(imageView);
-            }
+        if(locationImagesSuffix!=null)
+            if(locationImagesSuffix.length>0){
+                LinearLayout linearLayout = (LinearLayout) findViewById(R.id.imageLinear);
+                for(int i = 0; i<locationImagesSuffix.length; i++){
+                    ImageView imageView = new ImageView(this);
+                    imageView.setId(i);
+                    imageView.setPadding(2,2,2,2);
+                    Glide.with(this)
+                            .load("https://igx.4sqi.net/img/general/300x300"+locationImagesSuffix[i])
+                            .into(imageView);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    linearLayout.addView(imageView);
+                }
 
-        }
+            }
 
 
 

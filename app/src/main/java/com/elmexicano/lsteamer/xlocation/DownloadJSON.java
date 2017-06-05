@@ -48,6 +48,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             Uri UriQ;
             if(strings.length==3){
 
+                //If it's with Token
                 UriQ = Uri.parse(BASE_URL+"/search").buildUpon()
                         .appendQueryParameter(LATLON_PARAM, strings[0])
                         .appendQueryParameter(OAUTH_PARAM, strings[2])
@@ -55,7 +56,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                         .build();
             }
             else{
-
+                //If it's with Client ID and Client Secret
                 UriQ = Uri.parse(BASE_URL+"/search").buildUpon()
                         .appendQueryParameter(LATLON_PARAM, strings[0])
                         .appendQueryParameter(CLIENT_ID_PARAM, strings[2])
@@ -71,6 +72,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             urlCon = (HttpURLConnection) url.openConnection();
             urlCon.setRequestMethod("GET");
             urlCon.connect();
+
             // Read the input stream into a String
             InputStream inputStream = urlCon.getInputStream();
             StringBuffer buffer = new StringBuffer();
@@ -91,8 +93,10 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                     return null;
                 }
                 searchJSONstr = buffer.toString();
-                //Send the JSON file to get the data
+
+                //cleaning the JSON data
                 locations = cleanJSONHTML(searchJSONstr);
+                //Returning the array
                 return locations;
             }
 
@@ -136,6 +140,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             int distance;
             float latitude, longitude;
 
+            //For as long as there are venues in the JSON
             for (int i = 0; i < venueJSONArray.length(); i++) {
                 // Get the JSON object holding the venue
                 JSONObject venueJSONObj = venueJSONArray.getJSONObject(i);
@@ -147,7 +152,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                 /**
                  * Some Data Fields are not present in all of the Locations
                  * I don't think it's good practice to try/catch every single field
-                 * leaving it as it is for the moment until I research a solution
+                 * Time permitting, research a solution
                  */
                 //Location data
                 JSONObject locationJSON = venueJSONObj.getJSONObject("location");
@@ -166,12 +171,20 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                     postalCode ="";
                 }
 
+
                 //Category data
-                JSONObject categoriesJSON = venueJSONObj.getJSONArray("categories").getJSONObject(0);
-                category = categoriesJSON.getString("name");
-                JSONObject iconJSON = categoriesJSON.getJSONObject("icon");
-                icon = iconJSON.getString("prefix");
-                icon=icon+"bg_88.png";
+                try{
+                    JSONObject categoriesJSON = venueJSONObj.getJSONArray("categories").getJSONObject(0);
+                    category = categoriesJSON.getString("name");
+                    JSONObject iconJSON = categoriesJSON.getJSONObject("icon");
+                    icon = iconJSON.getString("prefix");
+                    icon=icon+"bg_88.png";
+
+                }catch (JSONException e) {
+                    category ="";
+                    icon="https://ss0.4sqi.net/img/categories_v2/building/home_bg_88.png";
+
+                }
 
                 //Contact data
                 JSONObject contactJSON = venueJSONObj.getJSONObject("contact");

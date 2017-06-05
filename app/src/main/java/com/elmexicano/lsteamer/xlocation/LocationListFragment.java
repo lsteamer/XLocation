@@ -4,7 +4,6 @@ package com.elmexicano.lsteamer.xlocation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.ListFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -43,7 +42,6 @@ public class LocationListFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         launchLocationDetailActivity(position);
-        Log.e("wat",MainActivity.DATE);
     }
 
     //Launching a new Activity
@@ -54,13 +52,19 @@ public class LocationListFragment extends ListFragment {
         //Images are being retrieved ONLY if the method hasn't been called
         if(locationData.getImagesSuffix()==null){
             DownloadImagesJSON imagesAsyncTask = new DownloadImagesJSON();
+            String [] images=null;
             try {
-                locationData.setImagesSuffix(imagesAsyncTask.execute(locationData.getLocationID(),MainActivity.DATE,MainActivity.CLIENT_ID,MainActivity.CLIENT_SECRET).get());
+                images = imagesAsyncTask.execute(locationData.getLocationID(),MainActivity.DATE,MainActivity.CLIENT_ID,MainActivity.CLIENT_SECRET).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
+
+            if(images!=null){
+                locationData.setImagesSuffix(images);
+            }
+
 
         }
 

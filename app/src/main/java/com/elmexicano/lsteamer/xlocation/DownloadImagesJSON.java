@@ -34,13 +34,10 @@ public class DownloadImagesJSON extends AsyncTask<String, Void, String[]> {
         // Will contain the raw JSON response as a string.
         String searchJSONstr;
 
-
         try {
 
             // Construct the URL for the Foursquare query
-
             final String BASE_URL = "https://api.foursquare.com/v2/venues/";
-            final String OAUTH_PARAM = "oauth_token";
             final String CLIENT_ID_PARAM = "client_id";
             final String CLIENT_SECRET_PARAM = "client_secret";
             final String VERSION = "v";

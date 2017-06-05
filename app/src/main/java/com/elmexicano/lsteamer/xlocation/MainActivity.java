@@ -24,14 +24,18 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements Serializable {
 
-    //
+    //Client ID & Client Secret
     protected static String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
     protected static String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
 
-    //
+    //Error Message
+    protected static String NOT_ONLINE = "No connection detected.";
+
+    //Connection Tokens
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
     private static final int REQUEST_CODE_FSQ_TOKEN_EXCHANGE = 201;
 
+    //Today's date for Foursquare query
     protected static String DATE;
 
 
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //Query requires today's date
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
@@ -47,15 +52,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
 
+    //Logging in without logging in
     protected void onClickNoUser(View view){
-        //Logging in without an user
-
-
 
         //Array to store the received values
         ArrayList<LocationData> locations = new ArrayList<>();
         //Class that downloads the HTML
         DownloadJSON seachAsyncTask = new DownloadJSON();
+
         try {
             //Location,Today's date, ClientID,ClientSecret
             locations = seachAsyncTask.execute("52.500342,13.425170",DATE,CLIENT_ID,CLIENT_SECRET).get();
@@ -65,14 +69,25 @@ public class MainActivity extends AppCompatActivity implements Serializable {
             e.printStackTrace();
         }
 
-        //Calling the List
-        Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("list",locations);
-        intent.putExtras(bundle);
-        //Deleting this one
-        finish();
-        startActivity(intent);
+        //If there's an issue Toast error message
+        if(locations==null){
+            toastMessage(this,NOT_ONLINE);
+
+        }
+        else{
+            //Calling the Intent
+            Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+
+            //Sending the Array
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("list",locations);
+            intent.putExtras(bundle);
+
+            //Ending this Activity
+            finish();
+            //Calling the next one
+            startActivity(intent);
+        }
 
 
     }
