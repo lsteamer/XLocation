@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     protected static final String CLIENT_SECRET = "D1STHG5U5OJTMICQXAAO4RGAQCXGZ0S105LGWO0XG5Z4LKQ2";
 
     //Error Message
-    protected static String NOT_ONLINE = "No connection detected.";
+    protected static final String NOT_ONLINE = "No connection detected.";
 
     //Connection Tokens
     private static final int REQUEST_CODE_FSQ_CONNECT = 200;
