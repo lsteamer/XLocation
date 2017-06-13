@@ -4,6 +4,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,8 +63,16 @@ public class LocationDetailActivity extends AppCompatActivity {
                             .load("https://igx.4sqi.net/img/general/300x300"+locationImagesSuffix[i])
                             .into(imageView);
                     imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    imageView.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            Log.e("wat","watwat "+v.getId());
+
+                        }
+                    });
                     linearLayout.addView(imageView);
                 }
+
 
         }
 
