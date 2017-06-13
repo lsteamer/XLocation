@@ -2,6 +2,7 @@ package com.elmexicano.lsteamer.xlocation;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 public class LocationDetailActivity extends AppCompatActivity {
 
@@ -48,7 +51,7 @@ public class LocationDetailActivity extends AppCompatActivity {
             transaction.commit();
         }
 
-        String[] locationImagesSuffix = locationData.getImagesSuffix();
+        final String[] locationImagesSuffix = locationData.getImagesSuffix();
 
         /**
          * Below is the image code
@@ -66,7 +69,8 @@ public class LocationDetailActivity extends AppCompatActivity {
                     imageView.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Log.e("wat","watwat "+v.getId());
+
+                            launchImageActivity(v.getId(), locationImagesSuffix);
 
                         }
                     });
@@ -75,8 +79,6 @@ public class LocationDetailActivity extends AppCompatActivity {
 
 
         }
-
-
 
 
 
@@ -91,6 +93,19 @@ public class LocationDetailActivity extends AppCompatActivity {
         tvAddress.setText(locationData.getAddress());
         tvPostalCode.setText(locationData.getPostalCode());
 
+
+    }
+
+    public void launchImageActivity(int position, String[] imagesURL){
+
+        Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
+
+        //Sending the Array
+        Bundle bundle = new Bundle();
+        intent.putExtras(bundle);
+
+        //Calling the next one
+        startActivity(intent);
 
     }
 

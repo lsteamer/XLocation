@@ -99,20 +99,25 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         }
         else{
-            //Calling the Intent
-            Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-
-            //Sending the Array
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("list",locations);
-            intent.putExtras(bundle);
-
-            //Ending this Activity
-            finish();
-            //Calling the next one
-            startActivity(intent);
+            //Launching the new Activity
+            launchListActivity(locations);
         }
 
+
+    }
+
+    public void launchListActivity(ArrayList<LocationData> locations){
+        Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
+
+        //Sending the Array
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("list",locations);
+        intent.putExtras(bundle);
+
+        //Ending this Activity
+        finish();
+        //Calling the next one
+        startActivity(intent);
 
     }
 
@@ -217,13 +222,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             }
             else{
-
-                Intent intent = new Intent(getApplicationContext(), LocationListActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("list",locations);
-                intent.putExtras(bundle);
-                finish();
-                startActivity(intent);
+                //Launching the new Activity
+                launchListActivity(locations);
 
             }
 
