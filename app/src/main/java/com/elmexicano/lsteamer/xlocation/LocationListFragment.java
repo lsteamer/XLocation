@@ -46,10 +46,12 @@ public class LocationListFragment extends ListFragment {
 
     //Launching a new Activity
     private void launchLocationDetailActivity(int position){
+
+        //The information of the location clicked
         LocationData locationData = (LocationData) getListAdapter().getItem(position);
 
 
-        //Images are being retrieved ONLY if the method hasn't been called
+        //The AsyncTask to get the images is being called ONLY once
         if(locationData.getImagesSuffix()==null){
             DownloadImagesJSON imagesAsyncTask = new DownloadImagesJSON();
             String [] images=null;

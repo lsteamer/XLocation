@@ -8,31 +8,29 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+
 /**
  * Created by lsteamer on 13/06/2017.
  */
 
-public class FullScreenImageAdapter extends PagerAdapter{
+public class FullScreenImageFragment extends PagerAdapter{
 
-    Context thisContext;
-    LayoutInflater layoutInflater;
+    private Context thisContext;
+    private LayoutInflater layoutInflater;
 
 
-    int [] resources = {
-            R.drawable.xberg,
-            R.drawable.lacoon,
-            R.drawable.max
-    };
-
-    public FullScreenImageAdapter(Context context){
+    public FullScreenImageFragment(Context context){
         thisContext = context;
         layoutInflater = (LayoutInflater) thisContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return resources.length;
+        return FullScreenImageActivity.imagesURL.length;
     }
+
+
 
     @Override
     public boolean isViewFromObject(View view, Object object) {
@@ -45,8 +43,9 @@ public class FullScreenImageAdapter extends PagerAdapter{
         View itemView = layoutInflater.inflate(R.layout.image_item, container, false);
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imageView);
-        imageView.setImageResource(resources[position]);
-
+        Glide.with(thisContext)
+                .load("https://igx.4sqi.net/img/general/original"+FullScreenImageActivity.imagesURL[position])
+                .into(imageView);
         container.addView(itemView);
 
         return itemView;

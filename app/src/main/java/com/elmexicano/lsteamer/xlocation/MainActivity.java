@@ -1,8 +1,16 @@
 package com.elmexicano.lsteamer.xlocation;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.app.ActivityCompat;
+import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
@@ -17,13 +25,17 @@ import com.foursquare.android.nativeoauth.FoursquareUnsupportedVersionException;
 import com.foursquare.android.nativeoauth.model.AccessTokenResponse;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.location.LocationServices;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity implements Serializable {
+public class MainActivity extends AppCompatActivity implements Serializable, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     //Client ID & Client Secret
     protected static final String CLIENT_ID = "150J3LTZ3W4AXHVDOTXVY0E1IRSQ4KJWSQLEAB0ON10JDDFH";
@@ -39,6 +51,14 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     //Today's date for Foursquare query
     protected static String DATE;
 
+    //User's location.
+    private double longitude;
+    private double latitude;
+    private String userLatLon;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+
+    //Declaring the Buttons
     protected static Button user, no_user;
 
 
@@ -48,6 +68,27 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         setContentView(R.layout.activity_main);
 
 
+        //Creating the GoogleApiClient for the Locale
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
+        //Granting permission
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //Asking for permission to use the thing
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
+
+
+
+
+
+
+        //Declaring the buttons and giving them OnClickListeners
         user = (Button) findViewById(R.id.button_user_login);
         no_user = (Button) findViewById(R.id.button_no_user_login);
 
@@ -67,11 +108,11 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
 
 
-
         //Query requires today's date
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dayDateStack = new SimpleDateFormat("yyyyMMdd");
         DATE = dayDateStack.format(cal.getTime());
+
 
     }
 
@@ -86,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
         try {
             //Location,Today's date, ClientID,ClientSecret
-            locations = seachAsyncTask.execute("52.500342,13.425170",DATE,CLIENT_ID,CLIENT_SECRET).get();
+            locations = seachAsyncTask.execute(userLatLon,DATE,CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -209,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             try {
                 //Location,Today's date, token
-                locations = seachAsyncTask.execute("52.500342,13.425170",DATE,accessToken).get();
+                locations = seachAsyncTask.execute(userLatLon,DATE,accessToken).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -256,8 +297,50 @@ public class MainActivity extends AppCompatActivity implements Serializable {
     }
 
 
+    /*
+        Below are the LocationListener Methods
+     */
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //Asking for permission to use the thing
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+        }
 
 
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            userLatLon = latitude+","+longitude;
+        }
 
+    }
 
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        latitude = mLastLocation.getLatitude();
+        longitude = mLastLocation.getLongitude();
+
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
 }

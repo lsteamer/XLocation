@@ -5,7 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -100,9 +99,8 @@ public class LocationDetailActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), FullScreenImageActivity.class);
 
-        //Sending the Array
-        Bundle bundle = new Bundle();
-        intent.putExtras(bundle);
+        intent.putExtra("imagesURL",imagesURL);
+        intent.putExtra("position",position);
 
         //Calling the next one
         startActivity(intent);
