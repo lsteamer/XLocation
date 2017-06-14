@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements Serializable, Goo
     //User's location.
     private double longitude;
     private double latitude;
-    private String userLatLon;
+    private String userLatLon=null;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
 
@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements Serializable, Goo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 
         //Creating the GoogleApiClient for the Locale
@@ -127,7 +129,10 @@ public class MainActivity extends AppCompatActivity implements Serializable, Goo
 
         try {
             //Location,Today's date, ClientID,ClientSecret
-            locations = seachAsyncTask.execute(userLatLon,DATE,CLIENT_ID,CLIENT_SECRET).get();
+            if(userLatLon!=null)
+                locations = seachAsyncTask.execute(userLatLon,DATE,CLIENT_ID,CLIENT_SECRET).get();
+            else
+                locations = seachAsyncTask.execute("52.5219184,13.4132147",DATE,CLIENT_ID,CLIENT_SECRET).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -250,7 +255,10 @@ public class MainActivity extends AppCompatActivity implements Serializable, Goo
 
             try {
                 //Location,Today's date, token
-                locations = seachAsyncTask.execute(userLatLon,DATE,accessToken).get();
+                if(userLatLon!=null)
+                    locations = seachAsyncTask.execute(userLatLon,DATE,accessToken).get();
+                else
+                    locations = seachAsyncTask.execute("52.5219184,13.4132147",DATE,accessToken).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
