@@ -126,6 +126,9 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
     private ArrayList<LocationData> cleanJSONHTML (String strJSON){
 
         ArrayList<LocationData> locations = new ArrayList<>();
+        //ordering the list through distance
+        ArrayList<Integer> lista = new ArrayList<>();
+        int order = 0;
         try{
 
 
@@ -142,6 +145,10 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
             //For as long as there are venues in the JSON
             for (int i = 0; i < venueJSONArray.length(); i++) {
+
+                order = 0;
+
+
                 // Get the JSON object holding the venue
                 JSONObject venueJSONObj = venueJSONArray.getJSONObject(i);
 
@@ -213,7 +220,12 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
                 }catch (JSONException e) {
                     instagram = "";
                 }
-                locations.add(new LocationData(locationID, title, address, distance, latitude, longitude, postalCode,
+
+                order = insertOrder(lista, distance);
+
+                lista.add(order,distance);
+
+                locations.add(order, new LocationData(locationID, title, address, distance, latitude, longitude, postalCode,
                         category, phoneNumber, formattedPhoneNumber, twitter,
                         instagram, facebook, icon));
 
@@ -226,6 +238,17 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
         }
         return locations;
 
+    }
+
+    private int insertOrder(ArrayList<Integer> lista, int distance){
+        int i=0;
+
+        for (; i< lista.size(); i++){
+            if(lista.get(i)>distance)
+                break;
+        }
+
+        return i;
     }
 
 }

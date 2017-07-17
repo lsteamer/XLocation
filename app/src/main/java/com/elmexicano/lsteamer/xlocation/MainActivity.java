@@ -351,4 +351,16 @@ public class MainActivity extends AppCompatActivity implements Serializable, Goo
         mGoogleApiClient.disconnect();
         super.onStop();
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+    }
 }
