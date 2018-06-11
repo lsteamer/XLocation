@@ -73,6 +73,7 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
             urlCon.setRequestMethod("GET");
             urlCon.connect();
 
+
             // Read the input stream into a String
             InputStream inputStream = urlCon.getInputStream();
             StringBuffer buffer = new StringBuffer();
@@ -193,33 +194,12 @@ public class DownloadJSON extends AsyncTask<String, Void, ArrayList<LocationData
 
                 }
 
-                //Contact data
-                JSONObject contactJSON = venueJSONObj.getJSONObject("contact");
-                try{
-                    phoneNumber = contactJSON.getString("phone");
-                }catch (JSONException e) {
-                    phoneNumber = "";
-                }
-                try{
-                    formattedPhoneNumber = contactJSON.getString("formattedPhone");
-                }catch (JSONException e) {
-                    formattedPhoneNumber = "";
-                }
-                try{
-                    twitter = contactJSON.getString("twitter");
-                }catch (JSONException e) {
-                    twitter = "";
-                }
-                try{
-                    facebook = contactJSON.getString("facebook");
-                }catch (JSONException e) {
-                    facebook = "";
-                }
-                try{
-                    instagram = contactJSON.getString("instagram");
-                }catch (JSONException e) {
-                    instagram = "";
-                }
+
+                phoneNumber = "";
+                formattedPhoneNumber = "";
+                twitter = "";
+                facebook = "";
+                instagram = "";
 
                 order = insertOrder(lista, distance);
 
